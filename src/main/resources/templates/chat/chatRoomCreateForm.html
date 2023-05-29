@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div class="py-5 text-center">
+        <h2>채팅방 생</h2>
+    </div>
+
+    <form role="form" action="/chat-room/create" th:object="${chatRoomCreateForm}" method="post">
+        <div class="form-group">
+            <label th:for="name">채팅방 이름</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="채팅방 이름을 입력하세요."
+                   th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">부적절한 이름입니다.</p>
+        </div>
+        <div class="form-group">
+            <label th:for="maxCapacity">최대 인원</label>
+            <input type="number" th:field="*{maxCapacity}" class="form-control" placeholder="최대 인원을 정해주세요."
+                   th:class="${#fields.hasErrors('maxCapacity')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('maxCapacity')}" th:errors="*{maxCapacity}">유효한 최대 인원을 입력해주세요.</p>
+        </div>
+        <button type="submit" class="btn btn-success">완료</button>
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+<th:block th:fragment="content">
+
+    <div class="container">
+        <div class="col-6">
+            <h1>[[${chatRoomDto.name}]]</h1>
+        </div>
+        <div>
+            <div id="msgArea" class="col"></div>
+            <div class="col-6">
+                <div class="input-group mb-3">
+                    <input type="text" id="msg" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6"></div>
+    </div>
+
+</th:block>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+
+        let chatRoomName = [[${chatRoomDto.name}]];
+        let chatRoomId = [[${chatRoomDto.id}]];
+        let username = [[${#authentication.principal.username}]];
+        let memberId = [[${memberId}]];
+
+        console.log("chatRoomName is " + chatRoomName + ", chatRoomId is " + chatRoomId + ", username is " + username + ", memberId is " + memberId);
+
+        let sockJs = new SockJS("/stomp/chat");
+        //1. SockJS를 내부에 들고있는 stomp를 내어줌
+        let stomp = Stomp.over(sockJs);
+
+        //2. connection이 맺어지면 실행
+        stomp.connect({}, function () {
+            console.log("STOMP Connection");
+
+            //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+            stomp.subscribe("/sub/chat-room/" + chatRoomId, function (chat) {
+                let content = JSON.parse(chat.body);
+
+                let writer = content.writer;
+                let str = '';
+
+                if (writer === username) {
+                    str = "<div class='col-6'>";
+                    str += "<div class='alert alert-secondary'>";
+                    str += "<b>" + writer + " : " + content.message + "</b>";
+                    str += "</div></div>";
+                } else {
+                    str = "<div class='col-6'>";
+                    str += "<div class='alert alert-warning'>";
+                    str += "<b>" + writer + " : " + content.message + "</b>";
+                    str += "</div></div>";
+                }
+
+                $("#msgArea").append(str);
+            });
+
+            //3. send(path, header, message)로 메세지를 보낼 수 있음
+            console.log("sockJs._transport.url is " + sockJs._transport.url);
+            let sessionId = sockJs._transport.url.split("/")[6];
+            stomp.send('/pub/chat-room/join', {}, JSON.stringify({type: "ENTER", chatRoomId: chatRoomId, memberId: memberId, writer: username, message: sessionId}))
+        });
+
+        $("#button-send").on("click", function() {
+            let msg = document.getElementById("msg");
+
+            console.log(username + " : " + msg.value);
+            stomp.send('/pub/chat-room/send-message', {}, JSON.stringify({type: "TALK", chatRoomId: chatRoomId, memberId: memberId, writer: username, message: msg.value}));
+            msg.value = '';
+        });
+    });
+</script>
+
+</html>

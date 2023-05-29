@@ -171,8 +171,9 @@ public class MemberService {
                 .subject(EmailMessage.CHANGE_PASSWORD_EMAIL_SUBJECT.getMessage())
                 .receiver(email)
                 .message(EmailMessage.CHANGE_PASSWORD_EMAIL_MESSAGE.getMessage() +
-                        EmailMessage.CHANGE_PASSWORD_EMAIL_LINK.getMessage() +
-                        URLEncoder.encode(verificationCode, "UTF-8"))
+                        EmailMessage.CHANGE_PASSWORD_EMAIL_LINK1.getMessage() +
+                        URLEncoder.encode(verificationCode, "UTF-8") +
+                        EmailMessage.CHANGE_PASSWORD_EMAIL_LINK2.getMessage())
                 .build());
     }
 

@@ -62,8 +62,9 @@ public class TemporaryMemberService {
                 .subject(EmailMessage.VERIFICATION_EMAIL_SUBJECT.getMessage())
                 .receiver(memberCreationDto.getEmail())
                 .message(EmailMessage.VERIFICATION_EMAIL_MESSAGE.getMessage() +
-                        EmailMessage.VERIFICATION_EMAIL_LINK.getMessage() +
-                        URLEncoder.encode(verificationCode, "UTF-8"))
+                        EmailMessage.VERIFICATION_EMAIL_LINK1.getMessage() +
+                        URLEncoder.encode(verificationCode, "UTF-8") +
+                        EmailMessage.VERIFICATION_EMAIL_LINK2.getMessage())
                 .build());
 
         return temporaryMemberId;
@@ -85,8 +86,9 @@ public class TemporaryMemberService {
                 .subject(EmailMessage.VERIFICATION_EMAIL_SUBJECT.getMessage())
                 .receiver(temporaryMember.getEmail())
                 .message(EmailMessage.VERIFICATION_EMAIL_MESSAGE.getMessage() +
-                        EmailMessage.VERIFICATION_EMAIL_LINK.getMessage() +
-                        URLEncoder.encode(verificationCode, "UTF-8"))
+                        EmailMessage.VERIFICATION_EMAIL_LINK1.getMessage() +
+                        URLEncoder.encode(verificationCode, "UTF-8") +
+                        EmailMessage.VERIFICATION_EMAIL_LINK2.getMessage())
                 .build());
     }
 
@@ -106,8 +108,9 @@ public class TemporaryMemberService {
                 .subject(EmailMessage.VERIFICATION_EMAIL_SUBJECT.getMessage())
                 .receiver(temporaryMember.getEmail())
                 .message(EmailMessage.VERIFICATION_EMAIL_MESSAGE.getMessage() +
-                        EmailMessage.VERIFICATION_EMAIL_LINK.getMessage() +
-                        URLEncoder.encode(verificationCode, "UTF-8"))
+                        EmailMessage.VERIFICATION_EMAIL_LINK1.getMessage() +
+                        URLEncoder.encode(verificationCode, "UTF-8") +
+                        EmailMessage.VERIFICATION_EMAIL_LINK2.getMessage())
                 .build());
     }
 

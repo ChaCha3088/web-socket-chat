@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import site.websocketchat.dto.member.MemberFindDto;
 import site.websocketchat.dto.member.MemberUpdateDto;
-import site.websocketchat.dto.store.StoreDto;
 import site.websocketchat.form.MemberUpdateForm;
 import site.websocketchat.service.member.MemberService;
 
@@ -22,7 +21,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final StoreService storeService;
 
     @GetMapping("/members")
     @PreAuthorize("hasRole('ROLE_MEMBER')")
@@ -38,9 +36,7 @@ public class MemberController {
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     public String memberInfo(@PathVariable("memberId") Long memberId, Model model) {
         MemberFindDto memberFindDto = memberService.findMemberFindDtoById(memberId);
-        List<StoreDto> storeDtos = storeService.findAllStoreDtoById(memberId);
         model.addAttribute("memberFindDto", memberFindDto);
-        model.addAttribute("storeDtos", storeDtos);
         return "member/memberInfo";
     }
 

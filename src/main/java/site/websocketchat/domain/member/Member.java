@@ -1,8 +1,8 @@
 package site.websocketchat.domain.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import site.websocketchat.domain.Address;
+import site.websocketchat.domain.ChatRoomMember;
 import site.websocketchat.domain.auth.Jwt;
 import site.websocketchat.domain.auth.OAuth2;
 import site.websocketchat.dto.member.MemberFindDto;
@@ -14,7 +14,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -35,11 +37,6 @@ public class Member extends BaseEntity {
     @Embedded
     private Address address;
 
-    @JsonIgnore
-    @NotNull
-    @OneToMany(mappedBy = "member")
-    private List<Store> stores = new ArrayList<>();
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private MemberRole role;
@@ -59,6 +56,9 @@ public class Member extends BaseEntity {
     private int logInAttempt = 0;
 
     private String passwordVerificationCode;
+
+    @OneToMany(mappedBy = "member")
+    private Set<ChatRoomMember> chatRoomMembers = new HashSet<>();
 
     @Builder
     protected Member(String name, String email, String password, String city, String street, String zipcode) {
@@ -139,16 +139,20 @@ public class Member extends BaseEntity {
     }
 
     //==연관관계 메소드==//
-    public void setStore(Store store) {
-        stores.add(store);
-    }
-
     public void addOAuth2(OAuth2 oAuth2) {
         oAuth2s.add(oAuth2);
     }
 
     public void setJwt(Jwt jwt) {
         this.jwt = jwt;
+    }
+
+    public void joinChatRoomMember(ChatRoomMember chatRoomMember) {
+        chatRoomMembers.add(chatRoomMember);
+    }
+
+    public void leaveChatRoomMember(ChatRoomMember chatRoomMember) {
+        chatRoomMembers.remove(chatRoomMember);
     }
 
 //    public void updateStoreName(String originalName, String newStoreName) throws IllegalStateException {
