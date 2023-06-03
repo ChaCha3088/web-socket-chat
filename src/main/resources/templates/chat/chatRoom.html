@@ -68,16 +68,16 @@
             });
 
             //3. send(path, header, message)로 메세지를 보낼 수 있음
+            //이 메시지를 통해 서버에서 sessionId를 얻을 수 있음
             console.log("sockJs._transport.url is " + sockJs._transport.url);
-            let sessionId = sockJs._transport.url.split("/")[6];
-            stomp.send('/pub/chat-room/join', {}, JSON.stringify({type: "ENTER", chatRoomId: chatRoomId, memberId: memberId, writer: username, message: sessionId}))
+            stomp.send('/pub/chat-room/join', {}, JSON.stringify({messageType: "ENTER", chatRoomId: chatRoomId, memberId: memberId, writer: username}))
         });
 
         $("#button-send").on("click", function() {
             let msg = document.getElementById("msg");
 
             console.log(username + " : " + msg.value);
-            stomp.send('/pub/chat-room/send-message', {}, JSON.stringify({type: "TALK", chatRoomId: chatRoomId, memberId: memberId, writer: username, message: msg.value}));
+            stomp.send('/pub/chat-room/send-message', {}, JSON.stringify({messageType: "TALK", chatRoomId: chatRoomId, memberId: memberId, writer: username, message: msg.value}));
             msg.value = '';
         });
     });

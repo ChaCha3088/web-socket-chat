@@ -51,10 +51,12 @@ dependencies {
 
 	//WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	//sockjs
-	implementation 'org.webjars:sockjs-client:1.5.1'
 	//stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
+
+	//클라이언트를 위한 라이브러리
+	//sockjs
+	implementation 'org.webjars:sockjs-client:1.5.1'
 	//jQuery
 	implementation 'org.webjars:jquery:3.6.4'
 	//Webjars

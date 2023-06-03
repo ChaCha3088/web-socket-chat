@@ -1,5 +1,6 @@
 package site.websocketchat.config.websocket;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -9,11 +10,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
+    @Value("${domain.host}")
+    private String domainHost;
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //stomp 접속 주소 url 설정
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOrigins("https://localhost:8080")
+                .setAllowedOrigins(domainHost)
                 .withSockJS();
     }
 

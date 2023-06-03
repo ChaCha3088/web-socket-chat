@@ -3,19 +3,20 @@ package site.websocketchat.dto.chat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.websocketchat.enumstorage.chat.MessageType;
 
 @Getter
 @NoArgsConstructor
 public class ChatDto {
-    private String type;
+    private MessageType messageType;
     private Long chatRoomId;
     private Long memberId;
     private String writer;
     private String message;
 
     @Builder
-    protected ChatDto(String type, Long chatRoomId, Long memberId, String writer, String message) {
-        this.type = type;
+    protected ChatDto(MessageType messageType, Long chatRoomId, Long memberId, String writer, String message) {
+        this.messageType = messageType;
         this.chatRoomId = chatRoomId;
         this.memberId = memberId;
         this.writer = writer;

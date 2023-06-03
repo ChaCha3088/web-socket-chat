@@ -19,8 +19,10 @@ public class ChatController {
     private final SimpMessageSendingOperations simpMessageSendingOperations;
     private final ChatRoomService chatRoomService;
 
+    //Config Class의 registry.setApplicationDestinationPrefixes("/pub")으로 설정한 접두어 "/pub"가 앞에 붙는다.
     @MessageMapping("/chat-room/join")
     public void joinChatRoom(@Payload ChatDto chatDto, SimpMessageHeaderAccessor headerAccessor) {
+        //채팅방에 입장하여 클라이언트가 메시지를 보내면, 이 부분에서 sessionId를 얻을 수 있다.
         String sessionId = headerAccessor.getSessionId();
 
         chatRoomService.joinChatRoom(chatDto.getChatRoomId(), chatDto.getMemberId(), sessionId);
@@ -41,7 +43,7 @@ public class ChatController {
         ChatRoomMember chatRoomMember = chatRoomService.leaveChatRoom(sessionId);
 
         ChatDto chatDto = ChatDto.builder()
-                .type(MessageType.LEAVE.toString())
+                .messageType(MessageType.LEAVE)
                 .chatRoomId(chatRoomMember.getChatRoom().getId())
                 .memberId(chatRoomMember.getMember().getId())
                 .writer(chatRoomMember.getMember().getEmail())

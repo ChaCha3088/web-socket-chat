@@ -91,6 +91,10 @@ server:
     key-store-password: ${KEY_STORE_PASSWORD}
     key-alias: ChaChaKeyStore
 
+#Domain
+domain:
+  host: https://localhost:8080
+
 # p6spy
 logging:
   level:
